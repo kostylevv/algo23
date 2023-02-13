@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  * "Ace Your Next Coding Interview by Learning Algorithms through Programming and Puzzle Solving"
  * by Pavel Pevzner and Alexander Kulikov.
  * See https://acecodinginterview.org/ or https://stepik.org/course/126012/info
- * @TODO impl with 1.5 1.5n comparisons.
+ * @TODO identify getMaxPairwiseProductEvenFast complexity
  */
 
 public class MaxPairwiseProduct {
@@ -29,7 +29,7 @@ public class MaxPairwiseProduct {
 
         return max_product;
     }
-
+    // Faster algorithm with O(2N) complexity
     static long getMaxPairwiseProductFast(int[] numbers) {
         long maxValue = Integer.MIN_VALUE;
         int maxIndex = -1;
@@ -51,6 +51,31 @@ public class MaxPairwiseProduct {
         return maxValue*secondMaxValue;
     }
 
+    // Even faster algorithm with ? complexity
+    static long getMaxPairwiseProductEvenFast(int[] numbers) {
+        long maxValue1 = Integer.MIN_VALUE;
+        long maxValue2 = Integer.MIN_VALUE;
+
+        if (numbers[0] > numbers[1]) {
+            maxValue1 = numbers[0];
+            maxValue2 = numbers[1];
+        } else {
+            maxValue1 = numbers[1];
+            maxValue2 = numbers[0];
+        }
+
+        for (int i = 2; i < numbers.length; i++) {
+            if (numbers[i] > maxValue1) {
+                maxValue2 = maxValue1;
+                maxValue1 = numbers[i];
+            } else if (numbers[i] > maxValue2) {
+                maxValue2 = numbers[i];
+            }
+        }
+
+        return maxValue1*maxValue2;
+    }
+
     public static void main(String[] args) {
         FastScanner scanner = new FastScanner(System.in);
         int n = scanner.nextInt();
@@ -60,6 +85,7 @@ public class MaxPairwiseProduct {
         }
         System.out.println(getMaxPairwiseProduct(numbers));
         System.out.println(getMaxPairwiseProductFast(numbers));
+        System.out.println(getMaxPairwiseProductEvenFast(numbers));
     }
 
     static class FastScanner {
